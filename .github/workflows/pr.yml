@@ -5,25 +5,14 @@ on:
       - main
 
 jobs:
-  build:
+  golangci:
+    name: lint
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout source code
-        uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-      - name: Setup Go
-        uses: actions/setup-go@v2
-        with:
-          go-version: '1.17'
-
-      - name: Format (If the job does not pass, please execute `gofmt -w  .` in your code directory.)
-        run: if [ "$(gofmt -s -l . | wc -l)" -gt 0 ]; then exit 1; fi
-
-      - name: Run golangci-lint
+      - name: Lint
         uses: golangci/golangci-lint-action@v2
         with:
-          version: latest
-
-      - name: Run unitest
-        run: GO111MODULE=on go test -run . ./...
-
+          version: v1.44.2
