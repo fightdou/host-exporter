@@ -10,7 +10,7 @@ import (
 	"time"
 
 	mon "github.com/digineo/go-ping/monitor"
-	"github.com/go-kit/kit/log"
+	"github.com/go-kit/log"
 	"github.com/prometheus/client_golang/prometheus"
 )
 
@@ -88,18 +88,15 @@ func (t *Target) AddOrUpdateMonitor(monitor *mon.Monitor) error {
 		return fmt.Errorf("error resolving target: %w", err)
 	}
 
-	var sanitizedAddrs []net.IPAddr
-	sanitizedAddrs = addrs
-
-	for _, addr := range sanitizedAddrs {
+	for _, addr := range addrs {
 		err := t.addIfNew(addr, monitor)
 		if err != nil {
 			return err
 		}
 	}
 
-	t.cleanUp(sanitizedAddrs, monitor)
-	t.Addresses = sanitizedAddrs
+	t.cleanUp(addrs, monitor)
+	t.Addresses = addrs
 	return nil
 }
 
