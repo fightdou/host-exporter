@@ -2,8 +2,8 @@ package pkg
 
 import (
 	"fmt"
-	"github.com/go-kit/kit/log"
-	"github.com/go-kit/kit/log/level"
+	"github.com/go-kit/log"
+	"github.com/go-kit/log/level"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/safchain/ethtool"
 	"path/filepath"
@@ -54,6 +54,9 @@ func getNicStatus() (map[string]float64, error) {
 		return nil, err
 	}
 	ethHandle, err := ethtool.NewEthtool()
+	if err != nil {
+		return nil, err
+	}
 	defer ethHandle.Close()
 	for _, nic := range nicName {
 		stats, err := ethHandle.LinkState(nic)
