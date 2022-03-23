@@ -16,7 +16,7 @@ import (
 type DiskStatusCollector struct {
 	hostDiskStatus *prometheus.Desc
 	hostRaidStatus *prometheus.Desc
-	logger log.Logger
+	logger         log.Logger
 }
 
 type result map[string]string
@@ -31,7 +31,7 @@ func NewDiskStatusCollector(promLog log.Logger) *DiskStatusCollector {
 		hostDiskStatus: prometheus.NewDesc(
 			"host_disk_status",
 			"The host disk status check (state=UBUnsp) instructions disk abnormal",
-			[]string{"slotNumber","state"},
+			[]string{"slotNumber", "state"},
 			nil,
 		),
 		hostRaidStatus: prometheus.NewDesc(
@@ -44,14 +44,14 @@ func NewDiskStatusCollector(promLog log.Logger) *DiskStatusCollector {
 	}
 }
 
-func(d *DiskStatusCollector) Describe (ch chan<- *prometheus.Desc){
+func (d *DiskStatusCollector) Describe(ch chan<- *prometheus.Desc) {
 	ch <- d.hostDiskStatus
 	ch <- d.hostRaidStatus
 }
 
-func(d *DiskStatusCollector) Collect (ch chan<- prometheus.Metric) {
+func (d *DiskStatusCollector) Collect(ch chan<- prometheus.Metric) {
 	raidName, raidStatus, diskInfo := d.getDiskStatusInfo()
-	level.Debug(d.logger).Log("msg", "Get raid card name" , raidName, "Get raid current status", raidStatus)
+	level.Debug(d.logger).Log("msg", "Get raid card name", raidName, "Get raid current status", raidStatus)
 	for _, va := range diskInfo {
 		ch <- prometheus.MustNewConstMetric(
 			d.hostDiskStatus,
@@ -70,7 +70,7 @@ func(d *DiskStatusCollector) Collect (ch chan<- prometheus.Metric) {
 	level.Info(d.logger).Log("msg", "collectd disk status success")
 }
 
-func (d *DiskStatusCollector) getDiskStatusInfo() (string, float64, map[string]deviceInfo){
+func (d *DiskStatusCollector) getDiskStatusInfo() (string, float64, map[string]deviceInfo) {
 	args := []string{
 		"/c0",
 		"show",
@@ -178,4 +178,3 @@ func deleteExtraSpace(s string) string {
 	}
 	return string(s2)
 }
-

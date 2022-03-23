@@ -30,11 +30,11 @@ const (
 )
 
 type NetPing struct {
-	hostNetPingLoss  *prometheus.Desc
-	hostNetConn      *prometheus.Desc
-	logger           log.Logger
-	monitor *mon.Monitor
-	metrics map[string]*mon.Metrics
+	hostNetPingLoss *prometheus.Desc
+	hostNetConn     *prometheus.Desc
+	logger          log.Logger
+	monitor         *mon.Monitor
+	metrics         map[string]*mon.Metrics
 }
 
 func NewNetPing(promLog log.Logger, mon *mon.Monitor) *NetPing {
@@ -50,18 +50,18 @@ func NewNetPing(promLog log.Logger, mon *mon.Monitor) *NetPing {
 			"The host network Whether can reach",
 			[]string{"target", "ip", "ip_version"},
 			nil,
-			),
-		logger: promLog,
+		),
+		logger:  promLog,
 		monitor: mon,
 	}
 }
 
-func (n *NetPing) Describe (ch chan<- *prometheus.Desc) {
+func (n *NetPing) Describe(ch chan<- *prometheus.Desc) {
 	ch <- n.hostNetConn
 	ch <- n.hostNetPingLoss
 }
 
-func (n *NetPing) Collect (ch chan <- prometheus.Metric) {
+func (n *NetPing) Collect(ch chan<- prometheus.Metric) {
 	if m := n.monitor.Export(); len(m) > 0 {
 		n.metrics = m
 	}

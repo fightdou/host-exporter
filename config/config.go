@@ -1,6 +1,5 @@
 package config
 
-
 import (
 	"fmt"
 	"io"
@@ -12,7 +11,7 @@ import (
 type duration time.Duration
 
 type Config struct {
-	Targets []string   `yaml:"targets"`
+	Targets []string `yaml:"targets"`
 
 	Ping struct {
 		Interval duration `yaml:"interval"`

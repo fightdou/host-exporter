@@ -11,8 +11,8 @@ import (
 )
 
 type NicOnline struct {
-	hostNicOnline   *prometheus.Desc
-	logger	   log.Logger
+	hostNicOnline *prometheus.Desc
+	logger        log.Logger
 }
 
 func NewNicOnline(promLog log.Logger) *NicOnline {
@@ -27,11 +27,11 @@ func NewNicOnline(promLog log.Logger) *NicOnline {
 	}
 }
 
-func (n *NicOnline) Describe (ch chan<- *prometheus.Desc) {
+func (n *NicOnline) Describe(ch chan<- *prometheus.Desc) {
 	ch <- n.hostNicOnline
 }
 
-func (n *NicOnline) Collect (ch chan<- prometheus.Metric) {
+func (n *NicOnline) Collect(ch chan<- prometheus.Metric) {
 	nicState, err := getNicStatus()
 	if err != nil {
 		level.Error(n.logger).Log("msg", "Get Nic status failed")

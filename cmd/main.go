@@ -29,7 +29,7 @@ var (
 	configFile    = kingpin.Flag("config.path", "Path to config file").Default("").String()
 	listenAddress = kingpin.Flag("web.listen-address", "Address on which to expose metrics.").Default(":9490").String()
 	metricsPath   = kingpin.Flag("web.telemetry-path", "Path under which to expose metric").Default("/metrics").String()
-	pingInterval = kingpin.Flag("ping.interval", "Interval for ICMP echo requests").Default("5s").Duration()
+	pingInterval  = kingpin.Flag("ping.interval", "Interval for ICMP echo requests").Default("5s").Duration()
 	pingTimeout   = kingpin.Flag("ping.timeout", "Timeout for ICMP echo request").Default("4s").Duration()
 	pingSize      = kingpin.Flag("ping.size", "Payload size for ICMP echo requests").Default("56").Uint16()
 	historySize   = kingpin.Flag("ping.history-size", "Number of results to remember per target").Default("10").Int()
@@ -92,7 +92,7 @@ func main() {
 	}
 }
 
-func startMonitor(cfg *config.Config, promLog log.Logger) (*mon.Monitor) {
+func startMonitor(cfg *config.Config, promLog log.Logger) *mon.Monitor {
 	var bind4 string
 	if ln, err := net.Listen("tcp4", "127.0.0.1:0"); err == nil {
 		// ipv4 enabled
@@ -115,18 +115,18 @@ func startMonitor(cfg *config.Config, promLog log.Logger) (*mon.Monitor) {
 		t := &pkg.Target{
 			Host:      host,
 			Addresses: make([]net.IPAddr, 0),
-			Delay:     time.Duration(10 * i) * time.Millisecond,
+			Delay:     time.Duration(10*i) * time.Millisecond,
 		}
 		targets[i] = t
 		err := t.AddOrUpdateMonitor(monitor)
 		if err != nil {
-			level.Error(promLog).Log("msg",err)
+			level.Error(promLog).Log("msg", err)
 		}
 	}
 	return monitor
 }
 
-func loadConfig() (*config.Config, error){
+func loadConfig() (*config.Config, error) {
 	if *configFile == "" {
 		cfg := config.Config{}
 		addFlagToConfig(&cfg)

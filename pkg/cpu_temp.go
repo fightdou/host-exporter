@@ -14,7 +14,7 @@ import (
 
 type CpuCollector struct {
 	hostCPUTempStatus *prometheus.Desc
-	logger log.Logger
+	logger            log.Logger
 }
 
 func NewCpuCollector(promLog log.Logger) *CpuCollector {
