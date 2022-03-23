@@ -2,15 +2,15 @@ package pkg
 
 import (
 	"bufio"
-	"fmt"
-	"github.com/go-kit/kit/log"
-	"github.com/go-kit/kit/log/level"
-	"github.com/prometheus/client_golang/prometheus"
 	"io"
 	"io/ioutil"
 	"os"
 	"regexp"
 	"strings"
+
+	"github.com/go-kit/log"
+	"github.com/go-kit/log/level"
+	"github.com/prometheus/client_golang/prometheus"
 )
 
 type DiskStatusCollector struct {
@@ -18,8 +18,6 @@ type DiskStatusCollector struct {
 	hostRaidStatus *prometheus.Desc
 	logger         log.Logger
 }
-
-type result map[string]string
 
 type deviceInfo struct {
 	slotNumber string
@@ -156,8 +154,7 @@ func parseDevice(devices []string) map[string]deviceInfo {
 		if len(element) < 13 {
 			continue
 		}
-		number := fmt.Sprintf("%s", element[0])
-		slotNumber := strings.TrimSpace(strings.Split(number, ":")[1])
+		slotNumber := strings.TrimSpace(strings.Split(element[0], ":")[1])
 		deInfo.slotNumber = slotNumber
 		deInfo.state = strings.TrimSpace(element[2])
 		deviceResult[slotNumber] = deInfo

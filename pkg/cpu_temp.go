@@ -4,12 +4,13 @@ import (
 	"bytes"
 	"encoding/csv"
 	"fmt"
-	"github.com/go-kit/kit/log"
-	"github.com/go-kit/kit/log/level"
-	"github.com/prometheus/client_golang/prometheus"
 	"math"
 	"strconv"
 	"strings"
+
+	"github.com/go-kit/log"
+	"github.com/go-kit/log/level"
+	"github.com/prometheus/client_golang/prometheus"
 )
 
 type CpuCollector struct {
@@ -50,12 +51,12 @@ func (c *CpuCollector) Collect(ch chan<- prometheus.Metric) {
 	}
 	results, err := Execute("ipmimonitoring", args...)
 	if err != nil {
-		level.Error(c.logger).Log("msg", "Exec command ipmimonitoring failed")
+		level.Error(c.logger).Log("msg", "Exec command ipmimonitoring failed", "error", err)
 	}
 
 	cpuResult, err := getCPUSensorData(results)
 	if err != nil {
-		level.Error(c.logger).Log("msg", "Get cpu sensor data failed")
+		level.Error(c.logger).Log("msg", "Get cpu sensor data failed", "error", err)
 	}
 	for _, data := range cpuResult {
 		var state float64
@@ -69,7 +70,7 @@ func (c *CpuCollector) Collect(ch chan<- prometheus.Metric) {
 		case "N/A":
 			state = math.NaN()
 		default:
-			level.Error(c.logger).Log("msg", "Unknown sensor state", "state", data.State)
+			level.Error(c.logger).Log("msg", "Unknown sensor state", "state", data.State, "error", err)
 			state = math.NaN()
 		}
 		level.Debug(c.logger).Log("msg", "Got values", "data", fmt.Sprintf("%+v", data))

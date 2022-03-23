@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"github.com/go-kit/kit/log"
 	"net"
 	"net/http"
 	"os"
@@ -12,6 +11,7 @@ import (
 	mon "github.com/digineo/go-ping/monitor"
 	"github.com/fightdou/host-exporter/config"
 	"github.com/fightdou/host-exporter/pkg"
+	"github.com/go-kit/log"
 	"github.com/go-kit/log/level"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -68,10 +68,10 @@ func main() {
 	disk := pkg.NewDiskStatusCollector(logger)
 	nic := pkg.NewNicOnline(logger)
 	net := pkg.NewNetPing(logger, m)
-	prometheus.Register(cpu)
-	prometheus.Register(disk)
-	prometheus.Register(nic)
-	prometheus.Register(net)
+	prometheus.MustRegister(cpu)
+	prometheus.MustRegister(disk)
+	prometheus.MustRegister(nic)
+	prometheus.MustRegister(net)
 
 	http.Handle(*metricsPath, promhttp.Handler())
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
