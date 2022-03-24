@@ -3,6 +3,8 @@ package pkg
 import (
 	"context"
 	"fmt"
+	"github.com/fightdou/host-exporter/config"
+	"github.com/go-kit/log/level"
 	"net"
 	"strings"
 	"time"
@@ -16,6 +18,7 @@ type Target struct {
 	Host      string
 	Delay     time.Duration
 	resolver  *net.Resolver
+	cfg       *config.Config
 }
 
 type NetPing struct {
@@ -36,7 +39,7 @@ func NewNetPing(promLog log.Logger, mon *mon.Monitor) *NetPing {
 		),
 		hostNetConn: prometheus.NewDesc(
 			"host_net_target_conn_status",
-			"The host network target Whether can reach(0=Bad,1=OK)",
+			"The host network target Whether can reach(0=abnormal, 1=normal)",
 			[]string{"target"},
 			nil,
 		),
@@ -66,6 +69,7 @@ func (n *NetPing) Collect(ch chan<- prometheus.Metric) {
 		ch <- prometheus.MustNewConstMetric(n.hostNetPingLoss, prometheus.GaugeValue, loss, l...)
 		ch <- prometheus.MustNewConstMetric(n.hostNetConn, prometheus.GaugeValue, float64(res), l...)
 	}
+	level.Info(n.logger).Log("msg", "collectd net conn status success")
 }
 
 func (t *Target) AddOrUpdateMonitor(monitor *mon.Monitor) error {

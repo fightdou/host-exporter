@@ -22,7 +22,7 @@ func NewCpuCollector(promLog log.Logger) *CpuCollector {
 	return &CpuCollector{
 		hostCPUTempStatus: prometheus.NewDesc(
 			"host_cpu_temp_status",
-			"The host cpu temp health status check(0=nominal, 1=warning, 2=critical)",
+			"The host cpu temp health status check(0=abnormal, 1=normal)",
 			[]string{"name"},
 			nil,
 		),
@@ -62,11 +62,11 @@ func (c *CpuCollector) Collect(ch chan<- prometheus.Metric) {
 		var state float64
 		switch data.State {
 		case "Nominal":
-			state = 0
-		case "Warning":
 			state = 1
+		case "Warning":
+			state = 0
 		case "Critical":
-			state = 2
+			state = 0
 		case "N/A":
 			state = math.NaN()
 		default:

@@ -4,7 +4,7 @@ targets:
   - 10.2.36.3
   - 10.2.36.9
 ping:
-  interval: 1s
-  timeout: 3s
+  interval: 2s
+  timeout: 4s
   history-size: 10
   payload-size: 56
