@@ -30,33 +30,28 @@ host_cpu_temp_status{name="CPU2 Status"} 1
 host_cpu_temp_status{name="CPU2 VCore"} 1
 host_cpu_temp_status{name="CPU2 VDDQ Temp"} 1
 host_cpu_temp_status{name="CPU2 VRD Temp"} 1
-# HELP host_disk_status The host disk status check (state=UBUnsp) instructions disk abnormal
-# TYPE host_disk_status gauge
-host_disk_status{slotNumber="0",state="Onln"} 1
-host_disk_status{slotNumber="1",state="Onln"} 1
-host_disk_status{slotNumber="10",state="JBOD"} 1
-host_disk_status{slotNumber="11",state="JBOD"} 1
-host_disk_status{slotNumber="12",state="JBOD"} 1
-host_disk_status{slotNumber="13",state="JBOD"} 1
-host_disk_status{slotNumber="14",state="JBOD"} 1
-host_disk_status{slotNumber="15",state="JBOD"} 1
-host_disk_status{slotNumber="16",state="JBOD"} 1
-host_disk_status{slotNumber="17",state="JBOD"} 1
-host_disk_status{slotNumber="18",state="JBOD"} 1
-host_disk_status{slotNumber="19",state="JBOD"} 1
-host_disk_status{slotNumber="2",state="JBOD"} 1
-host_disk_status{slotNumber="20",state="JBOD"} 1
-host_disk_status{slotNumber="21",state="JBOD"} 1
-host_disk_status{slotNumber="22",state="JBOD"} 1
-host_disk_status{slotNumber="23",state="JBOD"} 1
-host_disk_status{slotNumber="24",state="JBOD"} 1
-host_disk_status{slotNumber="3",state="JBOD"} 1
-host_disk_status{slotNumber="4",state="JBOD"} 1
-host_disk_status{slotNumber="5",state="JBOD"} 1
-host_disk_status{slotNumber="6",state="JBOD"} 1
-host_disk_status{slotNumber="7",state="JBOD"} 1
-host_disk_status{slotNumber="8",state="JBOD"} 1
-host_disk_status{slotNumber="9",state="JBOD"} 1
+# HELP host_physical_disk_status The host disk status check (state=UBUnsp) instructions disk abnormal
+# TYPE host_physical_disk_status gauge
+host_physical_disk_status{controller="0",device="20",media="HDD",model="AL14SEB060N",size="558.406 GB",slot="62:3",state="Onln"} 1
+host_physical_disk_status{controller="0",device="21",media="HDD",model="HUC101860CSS200",size="558.406 GB",slot="62:1",state="Onln"} 1
+host_physical_disk_status{controller="0",device="22",media="HDD",model="HUC101860CSS200",size="558.406 GB",slot="62:2",state="Onln"} 1
+host_physical_disk_status{controller="0",device="23",media="HDD",model="AL14SEB060N",size="558.406 GB",slot="62:0",state="Onln"} 1
+host_physical_disk_status{controller="0",device="24",media="HDD",model="HUC101860CSS200",size="558.406 GB",slot="62:5",state="Onln"} 1
+host_physical_disk_status{controller="0",device="25",media="HDD",model="AL15SEB060N",size="558.406 GB",slot="62:4",state="Onln"} 1
+host_physical_disk_status{controller="0",device="26",media="HDD",model="HUC101860CSS200",size="558.406 GB",slot="62:6",state="Onln"} 1
+host_physical_disk_status{controller="0",device="27",media="HDD",model="AL15SEB060N",size="558.406 GB",slot="62:7",state="Onln"} 1
+# HELP host_raid_card_status The host raid status check(0=abnormal, 1=normal)
+# TYPE host_raid_card_status gauge
+host_raid_card_status{controller="0"} 1
+# HELP host_virtual_disk_status The host disk status check (state=UBUnsp) instructions disk abnormal
+# TYPE host_virtual_disk_status gauge
+host_virtual_disk_status{controller="0",size="558.406 GB",slot="0/0",state="Optl",type="RAID1"} 1
+host_virtual_disk_status{controller="0",size="558.406 GB",slot="1/1",state="Optl",type="RAID0"} 1
+host_virtual_disk_status{controller="0",size="558.406 GB",slot="2/2",state="Optl",type="RAID0"} 1
+host_virtual_disk_status{controller="0",size="558.406 GB",slot="3/3",state="Optl",type="RAID0"} 1
+host_virtual_disk_status{controller="0",size="558.406 GB",slot="4/4",state="Optl",type="RAID0"} 1
+host_virtual_disk_status{controller="0",size="558.406 GB",slot="5/5",state="Optl",type="RAID0"} 1
+host_virtual_disk_status{controller="0",size="558.406 GB",slot="6/6",state="Optl",type="RAID0"} 1
 # HELP host_net_ping_loss_percent The host network packet loss percent
 # TYPE host_net_ping_loss_percent gauge
 host_net_ping_loss_percent{target="10.2.32.2"} 0
@@ -79,7 +74,4 @@ host_nic_on_line{interface="enp131s0f0"} 1
 host_nic_on_line{interface="enp131s0f1"} 1
 host_nic_on_line{interface="enp2s0f0"} 1
 host_nic_on_line{interface="enp2s0f1"} 1
-# HELP host_raid_status The host raid status check(0=abnormal, 1=normal)
-# TYPE host_raid_status gauge
-host_raid_status{raidCardName="SAS3108"} 1
 ```

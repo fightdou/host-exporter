@@ -1,4 +1,4 @@
-name: build-pr
+name: line
 on:
   pull_request:
     branches:

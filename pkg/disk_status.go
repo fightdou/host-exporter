@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"strconv"
+	"strings"
 
 	"github.com/go-kit/log"
 	"github.com/go-kit/log/level"
@@ -48,14 +49,14 @@ type Response struct {
 func NewDiskStatusCollector(promLog log.Logger) *DiskStatusCollector {
 	return &DiskStatusCollector{
 		hostPhysicalDiskStatus: prometheus.NewDesc(
-			"host_physical_disk_status",
-			"The host disk status check (state=UBUnsp) instructions disk abnormal",
+			"host_physical_drives_status",
+			"The host physical drives status check (0=abnormal, 1=normal)",
 			[]string{"controller", "slot", "device", "model", "state", "media", "size"},
 			nil,
 		),
 		hostVirtualDiskStatus: prometheus.NewDesc(
-			"host_virtual_disk_status",
-			"The host disk status check (state=UBUnsp) instructions disk abnormal",
+			"host_virtual_drives_status",
+			"The host virtual drives status check",
 			[]string{"controller", "slot", "type", "size", "state"},
 			nil,
 		),
