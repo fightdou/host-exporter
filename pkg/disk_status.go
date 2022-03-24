@@ -96,7 +96,7 @@ func (d *DiskStatusCollector) Collect(ch chan<- prometheus.Metric) {
 			}
 			ch <- prometheus.MustNewConstMetric(
 				d.hostPhysicalDiskStatus, prometheus.GaugeValue, value,
-				strconv.Itoa(controller.CommandStatus.Controller), physicalDrive.Position, strconv.Itoa(physicalDrive.Device), physicalDrive.Model,
+				strconv.Itoa(controller.CommandStatus.Controller), physicalDrive.Position, strconv.Itoa(physicalDrive.Device), strings.TrimSpace(physicalDrive.Model),
 				physicalDrive.State, physicalDrive.Media, physicalDrive.Size,
 			)
 		}
