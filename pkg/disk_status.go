@@ -50,11 +50,17 @@ func (d *DiskStatusCollector) Describe(ch chan<- *prometheus.Desc) {
 func (d *DiskStatusCollector) Collect(ch chan<- prometheus.Metric) {
 	raidName, raidStatus, diskInfo := d.getDiskStatusInfo()
 	level.Debug(d.logger).Log("msg", "Get raid card name", raidName, "Get raid current status", raidStatus)
+	var value float64
 	for _, va := range diskInfo {
+		if va.state == "UBUnsp" {
+			value = 0
+		} else {
+			value = 1
+		}
 		ch <- prometheus.MustNewConstMetric(
 			d.hostDiskStatus,
 			prometheus.GaugeValue,
-			1,
+			value,
 			va.slotNumber,
 			va.state,
 		)
