@@ -22,7 +22,7 @@ func NewCpuCollector(promLog log.Logger) *CpuCollector {
 	return &CpuCollector{
 		hostCPUTempStatus: prometheus.NewDesc(
 			"host_cpu_temp_status",
-			"The host cpu temp health status check",
+			"The host cpu temp health status check(0=nominal, 1=warning, 2=critical)",
 			[]string{"name"},
 			nil,
 		),

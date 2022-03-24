@@ -1,9 +1,0 @@
-targets:
-  - 10.2.36.1
-  - 10.2.36.3
-  - 10.2.36.2
-ping:
-  interval: 2s
-  timeout: 3s
-  history-size: 42
-  payload-size: 120
