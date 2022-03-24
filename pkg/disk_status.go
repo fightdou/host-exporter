@@ -2,14 +2,15 @@ package pkg
 
 import (
 	"bufio"
-	"github.com/go-kit/log"
-	"github.com/go-kit/log/level"
-	"github.com/prometheus/client_golang/prometheus"
 	"io"
 	"io/ioutil"
 	"os"
 	"regexp"
 	"strings"
+
+	"github.com/go-kit/log"
+	"github.com/go-kit/log/level"
+	"github.com/prometheus/client_golang/prometheus"
 )
 
 type DiskStatusCollector struct {
