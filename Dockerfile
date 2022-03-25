@@ -3,7 +3,7 @@ ADD . /go/host_exporter/
 WORKDIR /go/host_exporter
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o /go/bin/host_exporter cmd/main.go
 
-FROM douyali/centos8-5-storcli:latest
+FROM douyali/centos8-5-storcli:v1.0.1
 
 ENV CONFIG_FILE "/opt/config.yml"
 ENV CMD_FLAGS ""
