@@ -15,10 +15,10 @@ import (
 )
 
 type Target struct {
-	Host      string
-	Delay     time.Duration
-	resolver  *net.Resolver
-	cfg       *config.Config
+	Host     string
+	Delay    time.Duration
+	resolver *net.Resolver
+	cfg      *config.Config
 }
 
 type NetPing struct {

@@ -13,16 +13,16 @@ import (
 
 type DiskStatusCollector struct {
 	hostPhysicalDiskStatus *prometheus.Desc
-	hostVirtualDiskStatus *prometheus.Desc
-	hostRaidStatus *prometheus.Desc
-	logger         log.Logger
+	hostVirtualDiskStatus  *prometheus.Desc
+	hostRaidStatus         *prometheus.Desc
+	logger                 log.Logger
 }
 
 type Response struct {
 	Controllers []struct {
 		CommandStatus struct {
-			Controller int      `json:"Controller"`
-			Status     string   `json:"Status"`
+			Controller int    `json:"Controller"`
+			Status     string `json:"Status"`
 		} `json:"Command Status"`
 		ResponseData struct {
 			VirtualDrives int `json:"Virtual Drives"`

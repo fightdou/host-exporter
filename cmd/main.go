@@ -115,8 +115,8 @@ func startMonitor(cfg *config.Config, promLog log.Logger) *mon.Monitor {
 
 	for i, host := range cfg.Targets {
 		t := &pkg.Target{
-			Host:      host,
-			Delay:     time.Duration(10*i) * time.Millisecond,
+			Host:  host,
+			Delay: time.Duration(10*i) * time.Millisecond,
 		}
 		targets[i] = t
 		err := t.AddOrUpdateMonitor(monitor)

@@ -11,23 +11,22 @@ import (
 type diskIOUtil struct {
 	hostDiskIOUtil *prometheus.Desc
 	hostDiskIOWait *prometheus.Desc
-	logger            log.Logger
+	logger         log.Logger
 }
 
 type DiskIOInfo struct {
-	Sysstat struct{
-		Hosts []struct{
-			Statistics []struct{
-				Disk []struct{
-					DiskDevice  string  `json:"disk_device"`
-					Util        float64 `json:"util"`
-					aWait       float64 `json:"await"`
+	Sysstat struct {
+		Hosts []struct {
+			Statistics []struct {
+				Disk []struct {
+					DiskDevice string  `json:"disk_device"`
+					Util       float64 `json:"util"`
+					aWait      float64 `json:"await"`
 				} `json:"disk"`
 			} `json:"statistics"`
 		} `json:"hosts"`
 	} `json:"sysstat"`
 }
-
 
 func NewDiskIOUtil(promLog log.Logger) *diskIOUtil {
 	return &diskIOUtil{
@@ -36,7 +35,7 @@ func NewDiskIOUtil(promLog log.Logger) *diskIOUtil {
 			"The host disk io util percent",
 			[]string{"disk"},
 			nil,
-			),
+		),
 		hostDiskIOWait: prometheus.NewDesc(
 			"host_disk_io_await",
 			"The host disk io await time(ms)",
@@ -52,11 +51,11 @@ func (d *diskIOUtil) Describe(ch chan<- *prometheus.Desc) {
 	ch <- d.hostDiskIOWait
 }
 
-func (d *diskIOUtil) Collect (ch chan <- prometheus.Metric) {
+func (d *diskIOUtil) Collect(ch chan<- prometheus.Metric) {
 	diskData := d.getDiskIOUtil()
 	for _, hosts := range diskData.Sysstat.Hosts {
-		for _, s := range hosts.Statistics{
-			for _, disk:= range s.Disk {
+		for _, s := range hosts.Statistics {
+			for _, disk := range s.Disk {
 				ch <- prometheus.MustNewConstMetric(
 					d.hostDiskIOUtil,
 					prometheus.GaugeValue,
@@ -86,6 +85,6 @@ func (d *diskIOUtil) getDiskIOUtil() DiskIOInfo {
 		level.Error(d.logger).Log("msg", "Json Unmarshal failed", "err", jErr)
 		return diskInfo
 	}
-	level.Info(d.logger).Log("msg", "Command exec success", "result", diskInfo )
+	level.Info(d.logger).Log("msg", "Command exec success")
 	return diskInfo
 }
