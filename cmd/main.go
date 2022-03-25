@@ -26,7 +26,7 @@ import (
 
 var (
 	webConfig     = webflag.AddFlags(kingpin.CommandLine)
-	configFile    = kingpin.Flag("config.path", "Path to config file").Default("").String()
+	configFile    = kingpin.Flag("config.path", "Path to config file").Default("/opt/config.yml").String()
 	listenAddress = kingpin.Flag("web.listen-address", "Address on which to expose metrics.").Default(":9490").String()
 	metricsPath   = kingpin.Flag("web.telemetry-path", "Path under which to expose metric").Default("/metrics").String()
 	pingInterval  = kingpin.Flag("ping.interval", "Interval for ICMP echo requests").Default("5s").Duration()
@@ -68,10 +68,12 @@ func main() {
 	disk := pkg.NewDiskStatusCollector(logger)
 	nic := pkg.NewNicOnline(logger)
 	net := pkg.NewNetPing(logger, m)
+	diskIo := pkg.NewDiskIOUtil(logger)
 	prometheus.MustRegister(cpu)
 	prometheus.MustRegister(disk)
 	prometheus.MustRegister(nic)
 	prometheus.MustRegister(net)
+	prometheus.MustRegister(diskIo)
 
 	http.Handle(*metricsPath, promhttp.Handler())
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
