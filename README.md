@@ -12,14 +12,12 @@ ping:
   timeout: 3s
   history-size: 42
   payload-size: 120
-
 ```
 
 容器启动命令
 
 ```
 docker run -d --name=host-exporter --net=host  -v /opt/config.yml:/opt/config.yml -v /dev:/dev -v /sys:/sys --privileged=true douyali/host-exporter:latest
-
 ```
 
 查看 metrics , 访问 http://$IP:9490 
