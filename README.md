@@ -2,6 +2,28 @@
 
 此 exporter 收集CPU温度信息、raid卡状态、硬盘状态、网口连接状态、网络连通性、网络丢包率
 
+配置文件 /opt/config.yml
+
+```
+targets:
+  - 172.27.139.208
+ping:
+  interval: 2s
+  timeout: 3s
+  history-size: 42
+  payload-size: 120
+
+```
+
+容器启动命令
+
+```
+docker run -d --name=host-exporter --net=host  -v /opt/config.yml:/opt/config.yml -v /dev:/dev -v /sys:/sys --privileged=true douyali/host-exporter:latest
+
+```
+
+查看 metrics , 访问 http://$IP:9490 
+
 ```
 # HELP host_cpu_temp_status The host cpu temp health status check(0=abnormal, 1=normal)
 # TYPE host_cpu_temp_status gauge
