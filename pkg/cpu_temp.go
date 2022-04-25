@@ -53,16 +53,8 @@ func (c *CpuCollector) Collect(ch chan<- prometheus.Metric) {
 	results, err := Execute("ipmimonitoring", args...)
 	if err != nil {
 		level.Error(c.logger).Log("msg", "Exec command ipmimonitoring failed", "error", err)
+		return
 	}
-
-	defer func() {
-		if err := recover(); err != nil {
-			level.Error(c.logger).Log("msg", "Exec command ipmimonitoring failed")
-		}
-	}()
-	defer func() {
-		panic("Exec command ipmimonitoring failed")
-	}()
 
 	cpuResult, err := getCPUSensorData(results)
 	if err != nil {

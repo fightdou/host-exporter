@@ -33,9 +33,10 @@ func (n *NicOnline) Describe(ch chan<- *prometheus.Desc) {
 }
 
 func (n *NicOnline) Collect(ch chan<- prometheus.Metric) {
-	nicState, err := n.getNicStatus()
+	nicState, err := getNicStatus()
 	if err != nil {
 		level.Error(n.logger).Log("msg", "Get Nic status failed")
+		return
 	}
 	for k, v := range nicState {
 		ch <- prometheus.MustNewConstMetric(
@@ -48,15 +49,7 @@ func (n *NicOnline) Collect(ch chan<- prometheus.Metric) {
 	level.Info(n.logger).Log("msg", "collectd nic online status success")
 }
 
-func (n *NicOnline) getNicStatus() (map[string]float64, error) {
-	defer func() {
-		if err := recover(); err != nil {
-			level.Error(n.logger).Log("msg", "Get Nic status failed")
-		}
-	}()
-	defer func() {
-		panic("nic not found")
-	}()
+func getNicStatus() (map[string]float64, error) {
 	nicStatus := map[string]float64{}
 	nicName, err := getNicName()
 	if err != nil {
