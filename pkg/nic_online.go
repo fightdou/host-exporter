@@ -51,7 +51,7 @@ func (n *NicOnline) Collect(ch chan<- prometheus.Metric) {
 func getNicStatus() (map[string]float64, error) {
 	defer func() {
 		if err := recover(); err != nil {
-			fmt.Println(err)
+			level.Error(n.logger).Log("msg", "Get Nic status failed")
 		}
 	}()
 	defer func() {
