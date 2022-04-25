@@ -80,6 +80,7 @@ func (d *DiskStatusCollector) Collect(ch chan<- prometheus.Metric) {
 	response, err := d.getDiskStatusInfo()
 	if err != nil {
 		level.Error(d.logger).Log("msg", "Failed to fetch StorCLI output")
+		return
 	}
 
 	var value float64
