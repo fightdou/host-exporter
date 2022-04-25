@@ -77,7 +77,7 @@ func (d *DiskStatusCollector) Describe(ch chan<- *prometheus.Desc) {
 }
 
 func (d *DiskStatusCollector) Collect(ch chan<- prometheus.Metric) {
-	response, err := d.getDiskStatusInfo()
+	response, err := getDiskStatusInfo()
 	if err != nil {
 		level.Error(d.logger).Log("msg", "Failed to fetch StorCLI output")
 		return
@@ -115,7 +115,7 @@ func (d *DiskStatusCollector) Collect(ch chan<- prometheus.Metric) {
 	level.Info(d.logger).Log("msg", "collectd disk status success")
 }
 
-func (d *DiskStatusCollector) getDiskStatusInfo() (resp Response, err error) {
+func getDiskStatusInfo() (resp Response, err error) {
 	args := []string{
 		"/call",
 		"show",
@@ -124,11 +124,13 @@ func (d *DiskStatusCollector) getDiskStatusInfo() (resp Response, err error) {
 		"nolog",
 	}
 	results, err := Execute("storcli64", args...)
+	if err != nil {
+		return Response{}, fmt.Errorf("Execute storcli command failed %s ", err)
+	}
 	var response Response
 	err = json.Unmarshal(results, &response)
 	if err != nil {
 		return Response{}, fmt.Errorf("Failed to unmarshal json %s ", err)
-		level.Error(d.logger).Log("msg", "Exec command storcli64 failed")
 	}
 	return response, nil
 }
