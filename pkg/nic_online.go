@@ -49,6 +49,14 @@ func (n *NicOnline) Collect(ch chan<- prometheus.Metric) {
 }
 
 func getNicStatus() (map[string]float64, error) {
+	defer func() {
+		if err := recover(); err != nil {
+			fmt.Println(err)
+		}
+	}()
+	defer func() {
+		panic("nic not found")
+	}()
 	nicStatus := map[string]float64{}
 	nicName, err := getNicName()
 	if err != nil {
