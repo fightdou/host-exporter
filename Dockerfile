@@ -6,4 +6,4 @@ RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o /bin/host_exporte
 FROM douyali/centos8-5-storcli:v1.0.1
 
 COPY --from=builder /bin/host_exporter .
-ENTRYPOINT  [ "/bin/node_exporter" ]
+ENTRYPOINT  [ "/bin/host_exporter" ]
