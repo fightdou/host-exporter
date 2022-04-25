@@ -88,9 +88,9 @@ func getNicName() ([]string, error) {
 
 	for _, pci := range pciNumber {
 		path := fmt.Sprintf("/sys/bus/pci/devices/0000:%s/net/*/mtu", pci)
-		paths, fErr := filepath.Glob(path)
-		if fErr != nil {
-			return nil, err
+		paths, _ := filepath.Glob(path)
+		if len(paths) == 0 {
+			return nil, fmt.Errorf("get nic crad name failed")
 		}
 		dirName, _ := filepath.Split(paths[0])
 		nic := strings.Split(dirName, "net")[1]
