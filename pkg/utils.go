@@ -13,7 +13,7 @@ func Execute(name string, arg ...string) ([]byte, error) {
 	return stdoutStderr, err
 }
 
-func RunCommandWithTimeout(timeout int, command string, args ...string) (stdout []byte, isKilled bool) {
+func RunCommandWithTimeout(timeout time.Duration, command string, args ...string) (stdout []byte, isKilled bool) {
 	var stdoutBuf bytes.Buffer
 	cmd := exec.Command(command, args...)
 	cmd.Stdout = &stdoutBuf
@@ -22,7 +22,7 @@ func RunCommandWithTimeout(timeout int, command string, args ...string) (stdout 
 	go func() {
 		done <- cmd.Wait()
 	}()
-	after := time.After(time.Duration(timeout) * time.Millisecond)
+	after := time.After(timeout)
 	select {
 	case <-after:
 		cmd.Process.Signal(syscall.SIGINT)

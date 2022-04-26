@@ -7,6 +7,7 @@ import (
 	"math"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/go-kit/log"
 	"github.com/go-kit/log/level"
@@ -16,9 +17,10 @@ import (
 type CpuCollector struct {
 	hostCPUTempStatus *prometheus.Desc
 	logger            log.Logger
+	timeout           time.Duration
 }
 
-func NewCpuCollector(promLog log.Logger) *CpuCollector {
+func NewCpuCollector(promLog log.Logger, out time.Duration) *CpuCollector {
 	return &CpuCollector{
 		hostCPUTempStatus: prometheus.NewDesc(
 			"host_cpu_temp_status",
@@ -26,7 +28,8 @@ func NewCpuCollector(promLog log.Logger) *CpuCollector {
 			[]string{"name"},
 			nil,
 		),
-		logger: promLog,
+		logger:  promLog,
+		timeout: out,
 	}
 }
 
@@ -50,7 +53,7 @@ func (c *CpuCollector) Collect(ch chan<- prometheus.Metric) {
 		"--output-event-bitmask",
 	}
 
-	results, isKill := RunCommandWithTimeout(5000, "ipmimonitoring", args...)
+	results, isKill := RunCommandWithTimeout(c.timeout, "ipmimonitoring", args...)
 	if isKill {
 		level.Error(c.logger).Log("msg", "Exec command ipmimonitoring timeout")
 		return

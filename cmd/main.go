@@ -34,6 +34,7 @@ var (
 	pingSize      = kingpin.Flag("ping.size", "Payload size for ICMP echo requests").Default("56").Uint16()
 	historySize   = kingpin.Flag("ping.history-size", "Number of results to remember per target").Default("10").Int()
 	targets       = kingpin.Arg("targets", "A list of targets to ping").Strings()
+	ipmiTimeout   = kingpin.Flag("ipmi.timeout", "Timeout for ICMP echo request").Default("3s").Duration()
 )
 
 func main() {
@@ -64,7 +65,7 @@ func main() {
 
 	m := startMonitor(cfg, logger)
 
-	cpu := pkg.NewCpuCollector(logger)
+	cpu := pkg.NewCpuCollector(logger, *ipmiTimeout)
 	disk := pkg.NewDiskStatusCollector(logger)
 	nic := pkg.NewNicOnline(logger)
 	net := pkg.NewNetPing(logger, m)
