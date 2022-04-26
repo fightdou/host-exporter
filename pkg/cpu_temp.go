@@ -50,9 +50,9 @@ func (c *CpuCollector) Collect(ch chan<- prometheus.Metric) {
 		"--output-event-bitmask",
 	}
 
-	results, err := Execute("ipmimonitoring", args...)
-	if err != nil {
-		level.Error(c.logger).Log("msg", "Exec command ipmimonitoring failed", "error", err)
+	results, isKill := RunCommandWithTimeout(5000, "ipmimonitoring", args...)
+	if isKill {
+		level.Error(c.logger).Log("msg", "Exec command ipmimonitoring timeout")
 		return
 	}
 
