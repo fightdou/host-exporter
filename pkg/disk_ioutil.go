@@ -21,7 +21,7 @@ type DiskIOInfo struct {
 				Disk []struct {
 					DiskDevice string  `json:"disk_device"`
 					Util       float64 `json:"util"`
-					aWait      float64 `json:"await"`
+					AWait      float64 `json:"await"`
 				} `json:"disk"`
 			} `json:"statistics"`
 		} `json:"hosts"`
@@ -65,7 +65,7 @@ func (d *diskIOUtil) Collect(ch chan<- prometheus.Metric) {
 				ch <- prometheus.MustNewConstMetric(
 					d.hostDiskIOWait,
 					prometheus.GaugeValue,
-					disk.aWait,
+					disk.AWait,
 					disk.DiskDevice,
 				)
 			}
